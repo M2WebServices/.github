@@ -58,8 +58,7 @@ FitConnect résout un problème concret : les groupes d'amis sportifs manquent d
 
 ## 3. Architecture générale
 
-![Texte alternatif](./PostgreSQL Microservices-2026-04-28-103144.png)
-
+![Logo](./myarchii.png)
 
 > **Règle fondamentale** : le frontend ne connaît que l'API Gateway. Le WebSocket vers le Chat Service est la seule exception — intentionnelle, car les connexions persistantes n'ont pas leur place dans une gateway de requêtes ponctuelles.
 
