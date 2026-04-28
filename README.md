@@ -58,40 +58,8 @@ FitConnect résout un problème concret : les groupes d'amis sportifs manquent d
 
 ## 3. Architecture générale
 
-```
-┌─────────────────────────────────────────────────────┐
-│                  Frontend React                      │
-│            Vite SPA · JWT localStorage               │
-└──────────────────┬──────────────────────────────────┘
-                   │ GraphQL HTTP
-                   ▼
-┌─────────────────────────────────────────────────────┐
-│                  API Gateway :4100                   │
-│         Apollo Server 4 · JWT middleware             │
-│              Orchestration gRPC                      │
-└──┬──────────┬──────────┬──────────┬─────────────────┘
-   │ gRPC     │ gRPC     │ gRPC     │ gRPC     │ gRPC
-   ▼          ▼          ▼          ▼          ▼
-┌──────┐ ┌───────┐ ┌────────┐ ┌─────────┐ ┌──────┐
-│ Auth │ │ Comm  │ │Planning│ │Challenge│ │ Chat │
-│:5106 │ │ :5101 │ │ :5103  │ │  :5105  │ │:5104 │
-└──┬───┘ └───┬───┘ └────┬───┘ └────┬────┘ └──┬───┘
-   │         │          │ PUBLISH   │ SUB      │ SUB
-   │         │          ▼           │          │
-   │   ┌─────────────────────────────────────┐ │
-   └──►│           Redis :6379               │◄┘
-       │      Cache · Pub/Sub                │
-       │  channels: WORKOUT_COMPLETED        │
-       │            EVENT_CREATED            │
-       └─────────────────────────────────────┘
-                                              │ WebSocket ws://
-                                              ▼
-                                    ┌──────────────────┐
-                                    │  Frontend React  │
-                                    │  (connexion WS   │
-                                    │  directe au Chat)│
-                                    └──────────────────┘
-```
+![Texte alternatif](./PostgreSQL Microservices-2026-04-28-103144.png)
+
 
 > **Règle fondamentale** : le frontend ne connaît que l'API Gateway. Le WebSocket vers le Chat Service est la seule exception — intentionnelle, car les connexions persistantes n'ont pas leur place dans une gateway de requêtes ponctuelles.
 
